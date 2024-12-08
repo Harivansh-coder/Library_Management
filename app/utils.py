@@ -10,8 +10,9 @@ def role_required(role: list):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            current_user = Member.query.filter_by(
-                email=get_jwt_identity()).first()
+
+            current_user = Member.query.get(get_jwt_identity())
+
             if current_user.role.name not in role:
                 return jsonify(msg='Unauthorized'), 403
             return f(*args, **kwargs)

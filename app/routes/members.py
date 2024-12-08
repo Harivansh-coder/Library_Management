@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required
 from app.models import Member
 from app.schemas import member_schema, members_schema
@@ -22,9 +22,9 @@ def create_member():
 
     try:
         # Validate and deserialize the request
-        member = member_schema.load(data)
+        member = member_schema.load(data, session=db.session)
     except Exception as e:
-        return e.messages, 400
+        return "Invalid input", 400
 
     # Check if the member already exists
     existing_member = Member.query.filter_by(email=member.email).first()
@@ -33,7 +33,7 @@ def create_member():
         return {'msg': 'Member already exists'}, 400
 
     # Hash the password before saving
-    hashed_password = generate_password_hash(member.password, method='sha256')
+    hashed_password = generate_password_hash(member.password)
 
     # Create a new member instance with the hashed password
     new_member = Member(
@@ -47,9 +47,9 @@ def create_member():
     db.session.add(new_member)
     db.session.commit()
 
-    return member_schema.jsonify(new_member), 201
+    member_dump = member_schema.dump(new_member)
 
-
+    return jsonify(member_dump), 201
 # Get all members route
 # restricted only to admin users
 # Rate limit the route to 10 requests per minute

@@ -4,6 +4,7 @@ from app.models import Book
 from app.schemas import book_schema, books_schema
 from app import db, limiter
 from app.utils import role_required
+from flask_jwt_extended import get_jwt_identity
 
 books_bp = Blueprint('books', __name__)
 
@@ -14,38 +15,46 @@ books_bp = Blueprint('books', __name__)
 
 @books_bp.route('/create', methods=['POST'])
 @jwt_required()
-@limiter.limit("30 per minute")
+@limiter.limit("50 per minute")
 @role_required(['admin', 'librarian'])
 def create_book():
     data = request.json
 
     try:
-        book = book_schema.load(data)
+        book = book_schema.load(data, session=db.session)
     except Exception as e:
-        return e.messages, 400
+        return "Invalid data", 400
 
     existing_book = Book.query.filter_by(title=book.title).first()
 
     if existing_book:
         return {'msg': 'Book already exists'}, 400
 
+    # get the current user id
+    current_user_id = get_jwt_identity()
     new_book = Book(
         title=book.title,
         author=book.author,
         rating=book.rating,
         available_copies=book.available_copies,
-        added_by=book.added_by
+        added_by=current_user_id
     )
 
     db.session.add(new_book)
     db.session.commit()
 
-    return book_schema.jsonify(new_book), 201
+    # Exclude the 'member' field in the response
+    book_data = book_schema.dump(new_book)
+    if 'member' in book_data:
+        # Dynamically remove 'member' from the response data
+        del book_data['member']
 
+    return jsonify(book_data), 201
 
 # Fetch books by title or author
 # Rate limit the route to 100 requests per minute
 # get the books by id or title or author as query parameters
+
 
 @books_bp.route('/', methods=['GET'])
 @limiter.limit("100 per minute")

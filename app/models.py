@@ -18,7 +18,8 @@ class Member(db.Model):
     password = db.Column(db.String(100), nullable=False)
     created_at = db.Column(
         db.DateTime, server_default=func.now(), nullable=False)
-    updated_at = db.Column(db.DateTime, onupdate=func.now(), nullable=False)
+    updated_at = db.Column(
+        db.DateTime, server_default=func.now(), onupdate=func.now(), nullable=False)
     role = db.relationship('Role', backref=db.backref('members', lazy=True))
 
 
@@ -29,7 +30,8 @@ class Book(db.Model):
     author = db.Column(db.String(200), nullable=False, index=True)
     created_at = db.Column(
         db.DateTime, server_default=func.now(), nullable=False)
-    updated_at = db.Column(db.DateTime, onupdate=func.now(), nullable=False)
+    updated_at = db.Column(db.DateTime, server_default=func.now(),
+                           onupdate=func.now(), nullable=False)
     # the number of available copies of the book
     available_copies = db.Column(db.Integer, nullable=False, default=1)
     added_by = db.Column(db.Integer, db.ForeignKey(

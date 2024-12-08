@@ -43,6 +43,7 @@ class BookSchema(SQLAlchemySchema):
     updated_at = auto_field()
     available_copies = auto_field()
     added_by = auto_field(dump_only=True)
+
     member = fields.Nested(MemberSchema, only=["id", "username"])
 
 
