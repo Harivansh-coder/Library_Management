@@ -15,3 +15,4 @@ class Config:
     JWT_SECRET = os.getenv('JWT_SECRET')
     JWT_ACCESS_TOKEN_EXPIRES = int(
         os.getenv('JWT_ACCESS_TOKEN_EXPIRES', 3600))
+    RATELIMIT_DEFAULT = "30 per minute"

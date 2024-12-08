@@ -59,3 +59,17 @@ class BorrowedBookSchema(SQLAlchemySchema):
     is_returned = auto_field()
     book = fields.Nested(BookSchema, only=["id", "title", "author"])
     member = fields.Nested(MemberSchema, only=["id", "username", "email"])
+
+
+# Initialize the schemas for the models
+role_schema = RoleSchema()
+roles_schema = RoleSchema(many=True)
+
+member_schema = MemberSchema()
+members_schema = MemberSchema(many=True)
+
+book_schema = BookSchema()
+books_schema = BookSchema(many=True)
+
+borrowed_book_schema = BorrowedBookSchema()
+borrowed_books_schema = BorrowedBookSchema(many=True)
