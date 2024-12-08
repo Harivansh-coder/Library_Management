@@ -130,8 +130,6 @@ This is a simple library management system API built using Flask, SQLAlchemy, JW
 
 - **URL**: `/api/books/`
 - **Method**: `GET`
-- **Headers**:
-  - `Authorization`: `Bearer {your_jwt_token}`
 - **Response**:
   ```json
   {
@@ -192,6 +190,29 @@ This is a simple library management system API built using Flask, SQLAlchemy, JW
     "username": "john_doe",
     "email": "john.doe@example.com",
     "role_id": 1
+  }
+  ```
+
+### 6. **Search For a Book**
+
+- **URL**: `/api/books?title=The Great Gatsby`
+- **Method**: `GET`
+- **Headers**:
+  - `Authorization`: `Bearer {your_jwt_token}`
+- **Response**:
+  ```json
+  {
+    "books": [
+      {
+        "id": 1,
+        "title": "The Great Gatsby",
+        "rating": 5,
+        "author": "F. Scott Fitzgerald",
+        "available_copies": 10,
+        "added_by": 1
+      },
+      ...
+    ]
   }
   ```
 
