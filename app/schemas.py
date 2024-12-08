@@ -10,7 +10,7 @@ class RoleSchema(SQLAlchemySchema):
         load_instance = True  # Enable deserialization into the Role model
 
     id = auto_field()
-    name = auto_field()
+    name = auto_field(required=True)
     created_at = auto_field()
 
 
@@ -20,9 +20,9 @@ class MemberSchema(SQLAlchemySchema):
         load_instance = True
 
     id = auto_field()
-    username = auto_field()
-    email = auto_field()
-    role_id = auto_field()
+    username = auto_field(required=True)
+    email = auto_field(required=True)
+    role_id = auto_field(required=True)
     # Prevent password from being serialized
     password = fields.String(load_only=True)
     created_at = auto_field()
@@ -36,13 +36,13 @@ class BookSchema(SQLAlchemySchema):
         load_instance = True
 
     id = auto_field()
-    title = auto_field()
-    rating = auto_field()
-    author = auto_field()
+    title = auto_field(required=True)
+    rating = auto_field(required=True)
+    author = auto_field(required=True)
     created_at = auto_field()
     updated_at = auto_field()
     available_copies = auto_field()
-    added_by = auto_field()
+    added_by = auto_field(dump_only=True)
     member = fields.Nested(MemberSchema, only=["id", "username"])
 
 
@@ -52,8 +52,8 @@ class BorrowedBookSchema(SQLAlchemySchema):
         load_instance = True
 
     id = auto_field()
-    book_id = auto_field()
-    member_id = auto_field()
+    book_id = auto_field(required=True)
+    member_id = auto_field(required=True)
     borrowed_at = auto_field()
     returned_at = auto_field()
     is_returned = auto_field()
