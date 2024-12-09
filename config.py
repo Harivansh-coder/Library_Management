@@ -17,3 +17,10 @@ class Config:
     JWT_ACCESS_TOKEN_EXPIRES = int(
         os.getenv('JWT_ACCESS_TOKEN_EXPIRES', 3600))
     RATELIMIT_DEFAULT = "30 per minute"
+
+
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'test.db')
+    JWT_ACCESS_TOKEN_EXPIRES = 3
+    RATELIMIT_DEFAULT = "5 per minute"

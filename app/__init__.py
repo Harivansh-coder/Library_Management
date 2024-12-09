@@ -15,8 +15,13 @@ jwt = JWTManager()
 limiter = Limiter(key_func=get_remote_address)
 
 
-def create_app():
+def create_app(config_name=None):
     app = Flask(__name__)
+
+    # config in case of testing
+    if config_name == "testing":
+        app.config.from_object('config.TestingConfig')
+
     # Load configurations from config.py
     app.config.from_object('config.Config')
     # Rate limit configuration

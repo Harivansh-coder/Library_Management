@@ -20,6 +20,5 @@ def login():
     if not member or not check_password_hash(member.password, password):
         return jsonify({'msg': 'Invalid email or password'}), 401
 
-    print("Member >>>>>>>>>>>>>>>>>>>>>>>>", member.id)
     access_token = create_access_token(identity=str(member.id))
     return jsonify(access_token=access_token), 200
