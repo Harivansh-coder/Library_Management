@@ -32,15 +32,15 @@ This is a simple library management system API built using Flask, SQLAlchemy, JW
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/yourusername/library-management-system.git
-   cd library-management-system
+   git clone https://github.com/Harivansh-coder/Library_Management.git
+   cd Library_Management
    ```
 
 2. **Create a Virtual Environment (Optional but Recommended)**
 
    ```bash
    python3 -m venv venv
-   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   source venv/bin/activate 
    ```
 
 3. **Install Dependencies**
